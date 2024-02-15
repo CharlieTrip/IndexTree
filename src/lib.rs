@@ -113,10 +113,6 @@ impl IndexTree {
 
     /// Get the current index
     pub fn get(&mut self) -> &Vec<usize> {
-        if self.next {
-            let _ = self.inc();
-        };
-        self.next = true;
         &self.index
     }
 
@@ -129,6 +125,10 @@ impl IndexTree {
 impl Iterator for IndexTree {
     type Item = Vec<usize>;
     fn next(&mut self) -> Option<<Self as Iterator>::Item> {
+        if self.next {
+            let _ = self.inc();
+        };
+        self.next = true;
         let i = self.get().to_vec();
         if self.check() {
             Some(i)

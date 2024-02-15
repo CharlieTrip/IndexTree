@@ -169,3 +169,4 @@ while let Some(item) = it.next() {
 - [ ] Benchmark against standard loops
 - [ ] Optimize the execution time
 - [ ] Check for further generalization
+
