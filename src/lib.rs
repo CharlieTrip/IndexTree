@@ -9,6 +9,8 @@ pub struct IndexTree {
     next: bool,
 }
 
+type Response = Result<(usize, bool), ()>;
+
 impl IndexTree {
     /// Generate an IndexTree (plus sanitize the skips indexes)
     pub fn new(dimen: &Vec<usize>, skips: &Vec<usize>) -> IndexTree {
@@ -42,12 +44,15 @@ impl IndexTree {
 
     /// Fix the current index to the tree structure.
     /// Returns if good index and if completed the current subtree
-    fn fix(&mut self) -> Result<bool, ()> {
+    fn fix(&mut self) -> Response {
         self.next = false;
         let mut b = false;
+        let mut p = 0;
         for i in 1..self.length {
             if self.index[self.length - i] >= self.dimen[self.length - i] {
                 b = true;
+                p = self.length - i;
+
                 self.index[self.length - i - 1] = self.index[self.length - i - 1]
                     + self.index[self.length - i] / self.dimen[self.length - i];
                 self.index[self.length - i] =
@@ -57,7 +62,7 @@ impl IndexTree {
         if self.index[0] >= self.dimen[0] {
             return Err(());
         }
-        Ok(b)
+        Ok((p, b))
     }
 
     // /// TODO: Debug function to fix to a specific index
@@ -79,7 +84,7 @@ impl IndexTree {
 
     /// Increase index for a specific skip (of the initial vector)
     /// Sanitize skip if not consistent.
-    pub fn inc_skip_v(&mut self, skip: usize) -> Result<bool, ()> {
+    pub fn inc_skip_v(&mut self, skip: usize) -> Response {
         if (skip >= self.skips.len()) | (skip == 0) {
             self.index[self.length - 1] = self.index[self.length - 1] + 1;
         } else {
@@ -93,7 +98,7 @@ impl IndexTree {
 
     /// Increase index for a specific skip (of the initial vector)
     /// Sanitize skip if not consistent.
-    pub fn inc_skip(&mut self, skip: usize) -> Result<bool, ()> {
+    pub fn inc_skip(&mut self, skip: usize) -> Response {
         if (skip > self.length + 1) | (skip < 2) {
             self.index[self.length - 1] = self.index[self.length - 1] + 1;
         } else {
@@ -106,7 +111,7 @@ impl IndexTree {
     }
 
     /// Increase index in lowest subtree
-    pub fn inc(&mut self) -> Result<bool, ()> {
+    pub fn inc(&mut self) -> Response {
         self.next = false;
         self.inc_skip(0)
     }

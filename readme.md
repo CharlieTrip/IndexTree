@@ -80,17 +80,17 @@ Internally, `IndexTree` stores the current index as `index: Vec<usize>` which ca
 The variables `length` and `next: bool` are used for quick checks of dimension and allowing
 the usage of `IndexTree` as an `Iterator`.
 
-Moving the index via `inc()`,`inc_skip(n)` or `inc_skip_v(n)` returns a `Result<bool,()>` representing
-  with `Ok(false)` if the increase remained in the same subtree, `Ok(true)` if the current index
-  moved to the next subtree (at some level) or `Err()` if the current index moved outside the
-  tree, a.k.a. incorrect index or terminated iterator.
-  Using the previous example, `[0,0] => inc() -> Ok(false) => [0,1] => inc() -> Ok(true) => [1,0]`.
-  while `[0,0] => inc_skip(2) -> Ok(false) => [1,0]`.
+Moving the index via `inc()`,`inc_skip(n)` or `inc_skip_v(n)` returns a `Result<(usize,bool),()>`
+	representing with `Ok((_,false))` if the increase remained in the same subtree, `Ok((j,true))` if
+	the current index moved to the next subtree (at level `j`) or `Err()` if the current index moved
+	outside the tree, a.k.a. incorrect index or terminated iterator.
+  Using the previous example, `[0,0] => inc() -> Ok((0,false)) => [0,1] => inc() -> Ok((1,true)) => [1,0]`.
+  while `[0,0] => inc_skip(2) -> Ok((0,false)) => [1,0]`.
 
 Beware that skipping traverses `inc_skip(n)`, `inc_skip_v(n)` will return `Ok(true)` only if
   the index moves to a different subtree on a higher level.
   For example, for index-list `[3,2,2]`,
-  `[0,0,0] => inc_skip(3) -> Ok(false) => [0,1,0] => inc_skip(3) -> Ok(true) => [1,0,0]`.
+  `[0,0,0] => inc_skip(3) -> Ok((0,false)) => [0,1,0] => inc_skip(3) -> Ok((2,true)) => [1,0,0]`.
 
 
 
@@ -122,8 +122,10 @@ let dims: Vec<usize> = vec![2, 3, 2];
 let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
 let mut it: IndexTree = IndexTree::new(&dims, &skips);
 
+type Response = Result<(usize, bool), ()>;
+
 // To increase by one element
-let res : Result<bool,()> = it.inc();
+let res : Response = it.inc();
 let item : &Vec<usize> = it.get(); 
 ```
 
@@ -165,6 +167,7 @@ while let Some(item) = it.next() {
 
 # TODO
 
+- [ ] Consistency with skip index
 - [ ] Clean up the code
 - [ ] Benchmark against standard loops
 - [ ] Optimize the execution time

@@ -23,13 +23,13 @@ mod functionality {
         let dims: Vec<usize> = vec![2, 3, 2];
         let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
         let mut it: IndexTree = IndexTree::new(&dims, &skips);
-        assert_eq!(it.inc(), Ok(false));
+        assert_eq!(it.inc(), Ok((0, false)));
         assert_eq!(*it.get(), [0, 0, 1].to_vec());
-        assert_eq!(it.inc(), Ok(true));
+        assert_eq!(it.inc(), Ok((2, true)));
         assert_eq!(*it.get(), [0, 1, 0].to_vec());
-        assert_eq!(it.inc(), Ok(false));
+        assert_eq!(it.inc(), Ok((0, false)));
         assert_eq!(*it.get(), [0, 1, 1].to_vec());
-        assert_eq!(it.inc(), Ok(true));
+        assert_eq!(it.inc(), Ok((2, true)));
         assert_eq!(*it.get(), [0, 2, 0].to_vec());
     }
 
@@ -38,19 +38,19 @@ mod functionality {
         let dims: Vec<usize> = vec![2, 3, 2];
         let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
         let mut it: IndexTree = IndexTree::new(&dims, &skips);
-        assert_eq!(it.inc(), Ok(false));
+        assert_eq!(it.inc(), Ok((0, false)));
         assert_eq!(*it.get(), [0, 0, 1].to_vec());
-        assert_eq!(it.inc_skip(0), Ok(true));
+        assert_eq!(it.inc_skip(0), Ok((2, true)));
         assert_eq!(*it.get(), [0, 1, 0].to_vec());
-        assert_eq!(it.inc_skip(1), Ok(false));
+        assert_eq!(it.inc_skip(1), Ok((0, false)));
         assert_eq!(*it.get(), [0, 1, 1].to_vec());
-        assert_eq!(it.inc_skip(2), Ok(false));
+        assert_eq!(it.inc_skip(2), Ok((0, false)));
         assert_eq!(*it.get(), [1, 0, 0].to_vec());
-        assert_eq!(it.inc_skip(3), Ok(false));
+        assert_eq!(it.inc_skip(3), Ok((0, false)));
         assert_eq!(*it.get(), [1, 1, 0].to_vec());
-        assert_eq!(it.inc_skip(4), Ok(false));
+        assert_eq!(it.inc_skip(4), Ok((0, false)));
         assert_eq!(*it.get(), [1, 1, 1].to_vec());
-        assert_eq!(it.inc_skip(5), Ok(true));
+        assert_eq!(it.inc_skip(5), Ok((2, true)));
         assert_eq!(*it.get(), [1, 2, 0].to_vec());
     }
 
@@ -59,19 +59,19 @@ mod functionality {
         let dims: Vec<usize> = vec![2, 3, 2];
         let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
         let mut it: IndexTree = IndexTree::new(&dims, &skips);
-        assert_eq!(it.inc(), Ok(false));
+        assert_eq!(it.inc(), Ok((0, false)));
         assert_eq!(*it.get(), [0, 0, 1].to_vec());
-        assert_eq!(it.inc_skip_v(0), Ok(true));
+        assert_eq!(it.inc_skip_v(0), Ok((2, true)));
         assert_eq!(*it.get(), [0, 1, 0].to_vec());
-        assert_eq!(it.inc_skip_v(1), Ok(false));
+        assert_eq!(it.inc_skip_v(1), Ok((0, false)));
         assert_eq!(*it.get(), [1, 0, 0].to_vec());
-        assert_eq!(it.inc_skip_v(2), Ok(false));
+        assert_eq!(it.inc_skip_v(2), Ok((0, false)));
         assert_eq!(*it.get(), [1, 1, 0].to_vec());
-        assert_eq!(it.inc_skip_v(3), Ok(false));
+        assert_eq!(it.inc_skip_v(3), Ok((0, false)));
         assert_eq!(*it.get(), [1, 1, 1].to_vec());
-        assert_eq!(it.inc_skip_v(4), Ok(true));
+        assert_eq!(it.inc_skip_v(4), Ok((2, true)));
         assert_eq!(*it.get(), [1, 2, 0].to_vec());
-        assert_eq!(it.inc_skip_v(5), Ok(false));
+        assert_eq!(it.inc_skip_v(5), Ok((0, false)));
         assert_eq!(*it.get(), [1, 2, 1].to_vec());
     }
 
@@ -81,7 +81,7 @@ mod functionality {
         let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
         let mut it: IndexTree = IndexTree::new(&dims, &skips);
         let mut it2: IndexTree = it.clone();
-        assert_eq!(it.inc_skip_v(1), Ok(false));
+        assert_eq!(it.inc_skip_v(1), Ok((0, false)));
         assert_eq!(*it.get(), [1, 0, 0].to_vec());
         assert_eq!(it.inc_skip_v(1), Err(()));
         assert_eq!(*it.get(), [2, 0, 0].to_vec());
@@ -150,7 +150,7 @@ mod functionality {
                 6 => it.inc_skip_v(2),
                 7 => it.inc_skip_v(2),
                 8 => it.inc_skip_v(3),
-                _ => Ok(false),
+                _ => Ok((0, false)),
             };
             i = i + 1;
         }
