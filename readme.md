@@ -100,7 +100,7 @@ For standard traversing, the iterator can be created *as is* via, e.g., `into_it
 (standard ownership and mutability rules apply):
 
 ```
-use indextree::IndexTree;
+use index_tree::IndexTree;
 
 let dims: Vec<usize> = vec![2, 3, 2];
 let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
@@ -116,7 +116,7 @@ for item in it.into_iter() {
 If the code requires more fine-graded movement, one can traverse manually via `inc()` and `get()`:
 
 ```
-use indextree::IndexTree;
+use index_tree::IndexTree;
 
 let dims: Vec<usize> = vec![2, 3, 2];
 let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];
@@ -140,7 +140,7 @@ For skipping traversing, the iterator can be created *as is* via, e.g., `into_it
   index stored in `IndexTree`'s internal `skips: &Vec<usize>`.
 
 ```
-use indextree::IndexTree;
+use index_tree::IndexTree;
 
 let dims: Vec<usize> = vec![2, 3, 2];
 let skips: Vec<usize> = vec![0, 1, 2, 3, 4, 5];

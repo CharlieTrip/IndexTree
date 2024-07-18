@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod functionality {
-    use indextree::IndexTree;
+    use index_tree::IndexTree;
 
     #[test]
     fn creation_indextree() {
