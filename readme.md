@@ -169,7 +169,6 @@ while let Some(item) = it.next() {
 
 - [ ] Consistency with skip index
 - [ ] Clean up the code
-- [ ] Benchmark against standard loops
-- [ ] Optimize the execution time
 - [ ] Check for further generalization
-
+- [x] Benchmark against standard loops
+- [x] Optimize the execution time
