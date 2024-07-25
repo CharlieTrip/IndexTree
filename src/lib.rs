@@ -51,7 +51,7 @@ impl IndexTree {
   fn fix(&mut self, zero: usize) -> Response {
     self.next = false;
     let mut b = false;
-    let mut p = 0;
+    let mut p = 1;
     let len = self.length;
     let zero = len + 1 - zero;
 
@@ -74,7 +74,7 @@ impl IndexTree {
       self.good = false;
       return Err(());
     }
-    Ok((p, b))
+    Ok((p - 1, b))
   }
 
   // /// TODO: Debug function to fix to a specific index
